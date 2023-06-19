@@ -1,0 +1,41 @@
+version: "3.8"
+services:
+  kresch_db:
+    image: "postgres:15-bullseye"
+    container_name: "kresch_db"
+    restart: always
+    shm_size: 512M
+    environment:
+      POSTGRES_DB: "kresch_db"
+      POSTGRES_USER: "kresch"
+      POSTGRES_PASSWORD: "kreschp455"
+      PGDATA: "/var/lib/postgresql/data/pgdata"
+    volumes:
+      - "pgdata:/var/lib/postgresql/data/pgdata"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U kresch -d kresch_db"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+    deploy:
+      resources:
+        limits:
+          cpus: "2"
+          memory: "2G"
+    networks:
+      - kresch_net
+
+  kresch_bot:
+    build:
+      context: passgen
+      dockerfile: deploy/docker/Dockerfile
+    restart: unless-stopped
+    networks:
+      - kresch_net
+
+volumes:
+  pgdata:
+
+networks:
+  kresch_net:

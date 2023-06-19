@@ -1,0 +1,13 @@
+bot:
+  token: "6035260070:AAGkPbY1ekaYrDzfvu3U8KHkWtcQmLY3-eo"
+
+integrations:
+  pass_storage:
+    host: kresch_db
+    port: 5432
+    password: kreschp455
+    user: kresch
+    db_name: kresch_db
+    driver: asyncpg
+    sync_driver: psycopg2
+
